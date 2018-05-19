@@ -7,6 +7,7 @@ Simple implementation of Binary Search Tree. No gurantee for balance.
 - preOrder(self)
 - inOrder(self)
 - postOrder(self)
+- countNodes(self)
 - buildFromList(cls, l)
 
 Author: Yi Zhou
@@ -28,6 +29,8 @@ class BSTNode:
         return self.val
     def set_val(self, val):
         self.val = val
+    def __str__(self):
+        return "BSTNode("+ str(self.val)+ ")"
 
 
 
@@ -38,12 +41,16 @@ class BinarySearchTree:
     """
     def __init__(self):
         self.root = None
+        self.nodes_count = 0
 
     def setRoot(self, val):
         """
         Set the root value
         """
         self.root = BSTNode(val)
+    
+    def countNodes(self):
+        return self.nodes_count
 
     def insert(self, val):
         """
@@ -53,6 +60,7 @@ class BinarySearchTree:
             self.setRoot(val)
         else:
             self._insertNode(self.root, val)
+        self.nodes_count += 1
 
     def _insertNode(self, currentNode, val):
         """
@@ -111,9 +119,15 @@ class BinarySearchTree:
         # Find it and begin to delete the node
         else:
             if root.left is None: 
-                return root.right
+                res = root.right
+                del root
+                self.nodes_count -= 1
+                return res
             elif root.right is None:
-                return root.left
+                res = root.left
+                del root
+                self.nodes_count -= 1
+                return res
             # root has left child and right child, replace it with the minimun value in right subtree. 
             # Then delete the minimun value in right subtree recursively. 
             else:
@@ -129,7 +143,10 @@ class BinarySearchTree:
         """
         Get the max depth of the BST
         """
-        return self._dfsDepth(self.root, 0)
+        if self.root:
+            return self._dfsDepth(self.root, 0)
+        else:
+            return -1
 
     def _dfsDepth(self, node, height):
         """
@@ -237,6 +254,8 @@ def main():
     BSTree.delete(0)
     BSTree.visulize()
     BSTree.delete(-3)
+    BSTree.visulize()
+    BSTree.delete(-4)
     BSTree.visulize()
     # Simple Traverse Test
     print("Traverse")
