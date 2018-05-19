@@ -2,7 +2,7 @@
 
 Python3 implementation of trees.
 
-## class BinarySearchTree
+## BinarySearchTree
 Simple implementation of Binary Search Tree. No gurantee for balance.
 - insert(self, val)
 - delete(self, key)
