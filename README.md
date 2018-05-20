@@ -39,7 +39,7 @@ API:
 - countNodes(self)
 - buildFromList(cls, l)
 
-### BinarySearchTree
+### Binary Search Tree
 
 Simple implementation of Binary Search Tree. No gurantee for balance.
 
