@@ -1,4 +1,6 @@
 """
+Binary Search Tree
+
 Simple implementation of Binary Search Tree. No gurantee for balance.
 
 Convention: 

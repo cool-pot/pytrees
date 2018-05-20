@@ -6,12 +6,13 @@ Augmented data structure for checking overlap of intervals. Gurantee for balance
 Convention: 
 
 - key, val should be length 2 list/tuple, which is a interval. The interval stored in each node will be transformed into tuple.
-- "key" and "val" are basiclly the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
+- "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
 - input interval [L,R] should satisfy L < R
 
 API: 
 
 - queryOverlap(self, val)
+- queryAllOverlaps(self, val)
 - insert(self, val)
 - delete(self, key)
 - search(self, key)
@@ -129,6 +130,52 @@ class IntervalTree:
                     #     -----..z  
                     return self._dfsQueryOverlap(node.right, val)
             return None
+    
+    def queryAllOverlaps(self, val):
+        """
+        find all the intervals in the interval tree.
+
+        return a list of all intervals that overlap with val.
+        """
+        assert len(val) == 2
+        assert val[1] >= val[0]
+        val = tuple(val)
+        res = []
+        self._dfsFind(self.root, val, res)
+        return res
+    
+    def _dfsFind(self, node, val, res):
+        """
+        it should be better then naive iterations.
+        """
+        if not node: return None 
+
+        if self._isOverlap(node.val, val):
+            res.append(node.val)
+        
+        L, R = val
+        if R < node.val[0]:
+            # Case1
+            #  Right subtree can't overlap, search left
+            # ----- val
+            #        ------ node.val
+            #        /    \
+            #     ----    -----
+            self._dfsFind(node.left, val, res)
+        elif L > node.val[1]:
+            z = node.left.maxRight if node.left else (-float("inf"))
+            if z<L:
+                # Case3
+                # Left subtree no overlap, search right
+                #               L-----R 
+                #        ------ node.val
+                #        /    
+                #     -----..z  
+                self._dfsFind(node.right, val, res)
+        else:
+            self._dfsFind(node.left, val, res)
+            self._dfsFind(node.right, val, res)
+        return None
                 
     def _isOverlap(self, interval1, interval2):
         """
@@ -713,6 +760,8 @@ def main():
     overlaps.delete([15,18])
     print("Overlap with [16,17]",overlaps.queryOverlap([16,17]))
     print("Overlap with [0,3]",overlaps.queryOverlap([0,3]))
+    # Test findAllOverlaps
+    print("queryAllOverlaps with [10,20]",overlaps.queryAllOverlaps([10,20]))
     print("[END]Test Implementation of IntervalTree.")
 
 if __name__ == "__main__":
