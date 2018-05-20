@@ -28,6 +28,7 @@ Augmented data structure for checking overlaps of intervals. Gurantee for balanc
 API:
 
 - queryOverlap(self, val)
+- queryAllOverlaps(self, val)
 - insert(self, val)
 - delete(self, key)
 - search(self, key)
