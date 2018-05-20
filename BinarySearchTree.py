@@ -277,8 +277,6 @@ if __name__ == "__main__":
     newBSTree.visulize()
     print(newBSTree.inOrder())
     print("[END]Test Implementation of BinarySearchTree.")
-    
-
                 
 
 
