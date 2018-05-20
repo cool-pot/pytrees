@@ -1,6 +1,6 @@
 # pytrees
 
-A collections of python3 implementations of trees.
+A collection of python3 implementations of trees.
 
 ## Classes
 
