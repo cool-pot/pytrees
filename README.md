@@ -2,7 +2,7 @@
 
 Python3 implementation of trees.
 
-## AVLTree
+## AVL Tree
 
 AVL Tree. 
 Balanced Binary Search Tree. Gurantee for balance.
