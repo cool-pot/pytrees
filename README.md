@@ -1,11 +1,16 @@
-# trees
+# pytrees
 
-Python3 implementation of trees.
+A collections of python3 implementations of trees.
 
-## AVL Tree
+## Classes
+
+### AVL Tree
 
 AVL Tree. 
 Balanced Binary Search Tree. Gurantee for balance.
+
+API:
+
 - insert(self, val)
 - delete(self, key)
 - search(self, key)
@@ -16,9 +21,11 @@ Balanced Binary Search Tree. Gurantee for balance.
 - countNodes(self)
 - buildFromList(cls, l)
 
-## Interval Tree
+### Interval Tree
 
 Augmented data structure for checking overlaps of intervals. Gurantee for balance.
+
+API:
 
 - queryOverlap(self, val)
 - insert(self, val)
@@ -31,9 +38,12 @@ Augmented data structure for checking overlaps of intervals. Gurantee for balanc
 - countNodes(self)
 - buildFromList(cls, l)
 
-## BinarySearchTree
+### BinarySearchTree
 
 Simple implementation of Binary Search Tree. No gurantee for balance.
+
+
+API:
 
 - insert(self, val)
 - delete(self, key)
@@ -44,3 +54,7 @@ Simple implementation of Binary Search Tree. No gurantee for balance.
 - postOrder(self)
 - countNodes(self)
 - buildFromList(cls, l)
+
+## Convention: 
+
+- "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases

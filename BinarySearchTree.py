@@ -1,5 +1,12 @@
 """
 Simple implementation of Binary Search Tree. No gurantee for balance.
+
+Convention: 
+
+- "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
+
+API: 
+
 - insert(self, val)
 - delete(self, key)
 - search(self, key)

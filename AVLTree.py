@@ -1,5 +1,14 @@
 """
-AVL Tree. Gurantee for balance.
+AVL Tree. 
+
+Balanced Binary Search Tree. Gurantee for balance.
+
+Convention: 
+
+- "key" and "val" are basiclly the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
+
+API: 
+
 - insert(self, val)
 - delete(self, key)
 - search(self, key)
@@ -86,6 +95,9 @@ class AVLTree:
         return node 
 
     def insert(self, val):
+        """
+        insert a val into AVLTree
+        """
         if self.root is None:
             self.setRoot(val)
         else:
