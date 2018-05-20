@@ -1,5 +1,9 @@
 """
-AVL Tree. Gurantee for balance.
+Interval Tree
+
+augmented data structure for checking overlap of intervals. Gurantee for balance.
+
+- queryOverlap(self, val)
 - insert(self, val)
 - delete(self, key)
 - search(self, key)
@@ -10,23 +14,29 @@ AVL Tree. Gurantee for balance.
 - countNodes(self)
 - buildFromList(cls, l)
 
+
 Author: Yi Zhou
 Date: May 19, 2018 
-Reference: https://en.wikipedia.org/wiki/AVL_tree
-Reference: https://github.com/pgrafov/python-avl-tree/blob/master/pyavltree.py
+Reference: http://research.engineering.nyu.edu/~greg/algorithms/classnotes/interval-trees.pdf
+Reference: https://en.wikipedia.org/wiki/Interval_tree
 """
+
 
 from collections import deque
 import random
 
 
-class AVLNode:
+class IntervalNode:
     def __init__(self, val):
+        assert len(val) == 2
+        assert val[0] <= val[1]
+        val = tuple(val) 
         self.val = val
         self.parent = None
         self.left = None
         self.right = None 
         self.height = 0
+        self.maxRight = val[1] # Augmented DataStructure: Store the max right value of the subtree rooted at this node
 
     def isLeaf(self):
         return (self.height == 0)
@@ -45,9 +55,10 @@ class AVLNode:
         return (self.left.height if self.left else -1) - (self.right.height if self.right else -1)
     
     def __str__(self):
-        return "AVLNode("+ str(self.val)+ ", Height: %d )" % self.height
+        return "IntervalNode("+ str(self.val)+ ", maxRight: %d )" % self.maxRight
+    
 
-class AVLTree:
+class IntervalTree:
     def __init__(self):
         self.root = None
         self.rebalance_count = 0
@@ -57,10 +68,18 @@ class AVLTree:
         """
         Set the root value
         """
-        self.root = AVLNode(val)
+        self.root = IntervalNode(val)
     
     def countNodes(self):
         return self.nodes_count
+    
+    def queryOverlap(self, val):
+        """
+        val should be an input interval.
+        return IntervalNode that overlaps with the input interval that we find first in the IntervalTree.
+        if not found, return None
+        """
+        # TODO
     
     def getDepth(self):
         """
@@ -86,6 +105,9 @@ class AVLTree:
         return node 
 
     def insert(self, val):
+        """
+        insert a val into IntervalTree
+        """
         if self.root is None:
             self.setRoot(val)
         else:
@@ -94,14 +116,17 @@ class AVLTree:
     
     def _insertNode(self, currentNode, val):
         """
-        Helper function to insert a value into AVLTree.
+        Helper function to insert a value into IntervalTree.
         """
+        # first, update the currentNode
+        currentNode.maxRight = max(currentNode.maxRight, val[1])
+
         node_to_rebalance = None
         if currentNode.val > val:
             if(currentNode.left):
                 self._insertNode(currentNode.left, val)
             else:
-                child_node = AVLNode(val)
+                child_node = IntervalNode(val)
                 currentNode.left = child_node
                 child_node.parent = currentNode
                 if currentNode.height == 0:
@@ -116,7 +141,7 @@ class AVLTree:
             if(currentNode.right):
                 self._insertNode(currentNode.right, val)
             else:
-                child_node = AVLNode(val)
+                child_node = IntervalNode(val)
                 currentNode.right = child_node
                 child_node.parent = currentNode
                 if currentNode.height == 0:
@@ -129,8 +154,19 @@ class AVLTree:
                         node = node.parent
         if node_to_rebalance:
             self._rebalance(node_to_rebalance)
+    
+    def _recomputeMaxRight(self, node):
+        """
+        update the maxRight of an IntervalNode.
+        """
+        max1 = -float("inf") if not node.left else node.left.maxRight
+        max2 = -float("inf") if not node.right else node.right.maxRight
+        node.maxRight = max(node.val[1], max1, max2)
 
     def _rebalance(self, node_to_rebalance):
+        """
+        rebalance and fix maxRight due to rotation
+        """
         A = node_to_rebalance 
         F = A.parent #allowed to be NULL
         if A.balanceFactor() == -2:
@@ -155,6 +191,7 @@ class AVLTree:
                 B = A.right
                 C = B.right
                 assert (not A is None and not B is None and not C is None)
+                
                 A.right = B.left
                 if A.right:
                     A.right.parent = A
@@ -171,6 +208,8 @@ class AVLTree:
                    B.parent = F 
                 self._recomputeHeights(A) 
                 self._recomputeHeights(B.parent)
+                self._recomputeMaxRight(A)
+                self._recomputeMaxRight(B)
             else:
                 """Rebalance, case RLC 
                 [Original]:                   
@@ -191,7 +230,7 @@ class AVLTree:
                 """
                 B = A.right
                 C = B.left
-                assert (not A is None and not B is None and not C is None)
+                assert (not A is None and not B is None and not C is None)                
                 B.left = C.right
                 if B.left:
                     B.left.parent = B
@@ -213,6 +252,9 @@ class AVLTree:
                     C.parent = F
                 self._recomputeHeights(A)
                 self._recomputeHeights(B)
+                self._recomputeMaxRight(A)
+                self._recomputeMaxRight(B)
+                self._recomputeMaxRight(C)
         else:
             assert(node_to_rebalance.balanceFactor() == +2)
             if node_to_rebalance.left.balanceFactor() >= 0:
@@ -252,6 +294,8 @@ class AVLTree:
                    B.parent = F 
                 self._recomputeHeights(A) 
                 self._recomputeHeights(B.parent)
+                self._recomputeMaxRight(A)
+                self._recomputeMaxRight(B)
             else:
                 """Rebalance, case LRC 
                 [Original]:                   
@@ -295,6 +339,9 @@ class AVLTree:
                    C.parent = F
                 self._recomputeHeights(A)
                 self._recomputeHeights(B)
+                self._recomputeMaxRight(A)
+                self._recomputeMaxRight(B)
+                self._recomputeMaxRight(C)
         self.rebalance_count += 1
 
     def _recomputeHeights(self, start_from_node):
@@ -308,14 +355,14 @@ class AVLTree:
     
     def search(self, key):
         """
-        Search a AVLNode satisfies AVLNode.val = key.
-        if found return AVLNode, else return None.
+        Search a IntervalNode satisfies IntervalNode.val = key.
+        if found return IntervalNode, else return None.
         """
         return self._dfsSearch(self.root, key)
     
     def _dfsSearch(self, currentNode, key):
         """
-        Helper function to search a key in AVLTree.
+        Helper function to search a key in IntervalTree.
         """
         if currentNode is None:
             return None
@@ -325,10 +372,10 @@ class AVLTree:
             return self._dfsSearch(currentNode.left, key)
         else:
             return self._dfsSearch(currentNode.right, key)
-
+    
     def delete(self, key):
         """
-        Delete a key from AVLTree
+        Delete a key from IntervalTree
         """
         # first find
         node = self.search(key)
@@ -365,13 +412,23 @@ class AVLTree:
         else:
             self.root = None
         del node
+
+        # recomputeMaxRight due to the deletion
+        changed = True
+        node = parent
+        while node and changed:
+            old_maxRight = node.maxRight
+            self._recomputeMaxRight(node)
+            changed = (node.maxRight != old_maxRight)
+            node = node.parent
+
         # rebalance
         node = parent
         while (node):
             if not node.balanceFactor() in [-1, 0, 1]:
                 self._rebalance(node)
             node = node.parent
-    
+        
     def _removeBranch(self, node):
         parent = node.parent
         if (parent):
@@ -387,6 +444,16 @@ class AVLTree:
                 node.right.parent = parent 
             self._recomputeHeights(parent)
         del node
+
+        # recomputeMaxRight due to the deletion
+        changed = True
+        node = parent
+        while node and changed:
+            old_maxRight = node.maxRight
+            self._recomputeMaxRight(node)
+            changed = (node.maxRight != old_maxRight)
+            node = node.parent
+
         # rebalance
         node = parent
         while (node):
@@ -444,7 +511,16 @@ class AVLTree:
             node1.parent = parent2
         else:
             node2.right = node1
-            node1.parent = node2  
+            node1.parent = node2
+        
+        # recomputeMaxRight due to the swap
+        changed = True
+        node = node2
+        while node and changed:
+            old_maxRight = node.maxRight
+            self._recomputeMaxRight(node)
+            changed = (node.maxRight != old_maxRight)
+            node = node.parent
 
     def inOrder(self):
         res = []
@@ -482,16 +558,16 @@ class AVLTree:
     @classmethod
     def buildFromList(cls, l, shuffle = True):
         """
-        return a AVLTree object from l.
+        return a IntervalTree object from l.
         suffle the list first for better balance.
         """
         if shuffle:
             random.seed()
             random.shuffle(l)
-        AVL = AVLTree()
+        IT = IntervalTree()
         for item in l:
-            AVL.insert(item)
-        return AVL
+            IT.insert(item)
+        return IT
     
     def visulize(self):
         """
@@ -510,7 +586,7 @@ class AVLTree:
                 while len(layer):
                     node = layer.popleft()
                     if node is not None:
-                        val_list.append(node.val)
+                        val_list.append((node.val,node.maxRight))
                     else:
                         val_list.append(" ")
                     if node is None:
@@ -525,65 +601,28 @@ class AVLTree:
                 layer_count -= 1
             print("-----------------End Visualization-------------------")
 
-
 def main():
-    print("[BEGIN]Test Implementation of AVLTree.")
+    print("[BEGIN]Test Implementation of IntervalTree.")
     # Simple Insert Test
-    AVL = AVLTree()
-    AVL.insert(0)
-    AVL.insert(1)
-    AVL.insert(2)
-    AVL.insert(3)
-    AVL.insert(4)
-    AVL.insert(5)
-    AVL.insert(6)
-    AVL.insert(7)
-    AVL.insert(8)
-    AVL.insert(9)
-    AVL.insert(10)
-    AVL.insert(11)
-    AVL.insert(12)
-    AVL.insert(13)
-    AVL.insert(14)
-    print("Total nodes: ",AVL.nodes_count)
-    print("Total rebalance: ",AVL.rebalance_count)
+    IT = IntervalTree()
+    IT.insert((0,6))
+    IT.insert((5,9))
+    IT.insert((7,8))
+    IT.insert((9,12))
+    IT.insert((11,13))
+    IT.insert((6,20))
+    IT.insert((18,22))
+    IT.visulize()
     # Simple Delete Test
-    AVL.visulize()
-    AVL.delete(2)
-    AVL.visulize()
-    AVL.delete(5)
-    AVL.visulize()
-    AVL.delete(6)
-    AVL.visulize()
-    AVL.delete(4)
-    AVL.visulize()
-    AVL.delete(0)
-    AVL.visulize()
-    AVL.delete(3)
-    AVL.visulize()
-    AVL.delete(1)
-    AVL.delete(7)
-    AVL.delete(8)
-    AVL.delete(9)
-    AVL.visulize()
-    AVL.delete(10)
-    AVL.delete(12)
-    AVL.visulize()
-    print("Total nodes: ",AVL.nodes_count)
-    print("Total rebalance: ",AVL.rebalance_count)
-    print("----------------------------------------")
-    input_list = list(range(2**16))
-    new_AVL = AVLTree.buildFromList(input_list,shuffle = False)
-    print("Total Nodes:",new_AVL.countNodes())
-    print("Total Depth:",new_AVL.getDepth())
-    print("Total rebalance: ",new_AVL.rebalance_count)
-    new_AVL = AVLTree.buildFromList(input_list,shuffle = True)
-    print("Total Nodes:",new_AVL.countNodes())
-    print("Total Depth:",new_AVL.getDepth())
-    print("Total rebalance: ",new_AVL.rebalance_count)
-    print("Test inOrder:",  new_AVL.inOrder()==list(range(2**16)))
-    print("[END]Test Implementation of AVLTree.")
-    
+    IT.delete((9,12))
+    IT.visulize()
+    IT.delete((5,9))
+    IT.visulize()
+    IT.delete((6,20))
+    IT.visulize()
+    IT.delete((0,6))
+    IT.visulize()
+    print("[END]Test Implementation of IntervalTree.")
+
 if __name__ == "__main__":
     main()
-
