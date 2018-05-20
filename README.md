@@ -67,6 +67,22 @@ API:
 - startsWith(self, prefix)
 - findAllWordsStartsWith(self, prefix)
 - buildFromList(cls, l)
+
+### Binary Index Tree
+
+A Fenwick tree or Binary Indexed Tree is a data structure that can efficiently update elements and calculate prefix sums in a table of numbers.
+
+Time Complexity: update & prefixSum, O(logN)
+Space Complexity: O(N)
+
+API: 
+
+- update(self,i,k)  --> update value k to index i
+- prefixSum(self,i) --> sum up [index 0, index 1, ..., index i]
+- preview(self) 
+- getSize(self)
+- buildFromList(cls, l)
+
 ## Convention: 
 
 - "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
