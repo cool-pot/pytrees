@@ -56,6 +56,17 @@ API:
 - countNodes(self)
 - buildFromList(cls, l)
 
+### Trie (Prefix-Tree)
+
+Prefix-tree. Useful for text search.
+
+API: 
+
+- insert(self, word)
+- search(self, word)
+- startsWith(self, prefix)
+- findAllWordsStartsWith(self, prefix)
+- buildFromList(cls, l)
 ## Convention: 
 
 - "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases

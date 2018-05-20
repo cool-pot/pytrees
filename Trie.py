@@ -1,7 +1,7 @@
 """
 Trie (Prefix-Tree). 
 
-Simple Implementation of prefix-tree. Useful for text search.
+Prefix-tree. Useful for text search.
 
 API: 
 
