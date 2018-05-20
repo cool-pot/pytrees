@@ -7,7 +7,8 @@ API:
 
 - insert(self, word)
 - search(self, word)
-- startsWith(self, prefix):
+- startsWith(self, prefix)
+- findAllWordsStartsWith(self, prefix)
 - buildFromList(cls, l)
 
 Author: Yi Zhou
