@@ -72,10 +72,6 @@ API:
 
 A Fenwick tree or Binary Indexed Tree is a data structure that can efficiently update elements and calculate prefix sums in a table of numbers.
 
-Time Complexity: update & prefixSum, O(logN)
-
-Space Complexity: O(N)
-
 API: 
 
 - update(self,i,k)  --> update value k to index i
@@ -83,6 +79,10 @@ API:
 - preview(self) 
 - getSize(self)
 - buildFromList(cls, l)
+
+Time Complexity: update & prefixSum, O(logN)
+
+Space Complexity: O(N)
 
 ## Convention: 
 
