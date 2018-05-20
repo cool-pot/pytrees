@@ -244,7 +244,7 @@ class BinarySearchTree:
                 layer_count -= 1
             print("-----------------End Visualization-------------------")
  
-def main():
+if __name__ == "__main__":
     print("[BEGIN]Test Implementation of BinarySearchTree.")
     # Simple Insert Test
     BSTree = BinarySearchTree()
@@ -278,8 +278,6 @@ def main():
     print(newBSTree.inOrder())
     print("[END]Test Implementation of BinarySearchTree.")
     
-if __name__ == "__main__":
-    main()
 
                 
 

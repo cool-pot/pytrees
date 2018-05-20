@@ -717,7 +717,7 @@ class IntervalTree:
                 layer_count -= 1
             print("-----------------End Visualization-------------------")
 
-def main():
+if __name__ == "__main__":
     print("[BEGIN]Test Implementation of IntervalTree.")
     # Simple Insert Test
     IT = IntervalTree()
@@ -763,6 +763,3 @@ def main():
     # Test findAllOverlaps
     print("queryAllOverlaps with [10,20]",overlaps.queryAllOverlaps([10,20]))
     print("[END]Test Implementation of IntervalTree.")
-
-if __name__ == "__main__":
-    main()

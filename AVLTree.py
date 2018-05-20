@@ -5,7 +5,7 @@ Balanced Binary Search Tree. Gurantee for balance.
 
 Convention: 
 
-- "key" and "val" are basiclly the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
+- "key" and "val" are almost the same in this implementation. use term "key" for search and delete a particular node. use term "val" for other cases
 
 API: 
 
@@ -538,7 +538,7 @@ class AVLTree:
             print("-----------------End Visualization-------------------")
 
 
-def main():
+if __name__ == "__main__":
     print("[BEGIN]Test Implementation of AVLTree.")
     # Simple Insert Test
     AVL = AVLTree()
@@ -595,7 +595,3 @@ def main():
     print("Total rebalance: ",new_AVL.rebalance_count)
     print("Test inOrder:",  new_AVL.inOrder()==list(range(2**16)))
     print("[END]Test Implementation of AVLTree.")
-    
-if __name__ == "__main__":
-    main()
-
