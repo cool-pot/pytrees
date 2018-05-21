@@ -4,6 +4,52 @@
 
 A collection of python3 implementations of trees. Including AVL Tree, Interval Tree and More.
 
+## Install
+
+~~~ shell
+pip install pytrees 
+~~~
+
+## Usage
+
+~~~python
+>>> from pytrees import AVLTree, IntervalTree, BinaryIndexTree, Trie
+
+>>> avl = AVLTree.buildFromList([-1,-2,1,2,3,4,5,6])
+>>> avl.visulize()
+~~~
+~~~ bash
+-----------------Visualize Tree----------------------
+         2
+      -1  5
+   -2  1  3  6
+               4      
+-----------------End Visualization-------------------
+~~~
+~~~ python
+>>> avl.delete(4)
+>>> avl.visulize()
+~~~
+~~~ bash
+-----------------Visualize Tree----------------------
+      2
+   -1  5
+-2  1  3  6
+-----------------End Visualization-------------------
+~~~
+~~~python
+>>> avl.insert(0)
+>>> avl.visulize()
+~~~
+~~~ bash
+-----------------Visualize Tree----------------------
+         2
+      -1  5
+   -2  1  3  6
+      0               
+-----------------End Visualization-------------------
+~~~
+
 ## Classes
 
 ### AVL Tree
