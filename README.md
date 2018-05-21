@@ -7,7 +7,7 @@ A collection of python3 implementations of trees. Including AVL Tree, Interval T
 ## Install
 
 ~~~ shell
-pip install pytrees 
+pip3 install pytrees 
 ~~~
 
 ## Usage
