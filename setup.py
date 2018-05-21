@@ -82,12 +82,10 @@ if __name__ == "__main__":
     repository_name = os.path.basename(os.path.dirname(__file__))
 
     # Project Url
-    URL = "https://github.com/{0}/{1}".format(GITHUB_USERNAME, repository_name)
-    # Use todays date as GitHub release tag
-    github_release_tag = str(date.today())
+    URL = "https://github.com/cool-pot/pytrees"
+    
     # Source code download url
-    DOWNLOAD_URL = "https://github.com/{0}/{1}/tarball/{2}".format(
-        GITHUB_USERNAME, repository_name, github_release_tag)
+    DOWNLOAD_URL = "https://github.com/cool-pot/pytrees/archive/v0.0.1.tar.gz"
 
     try:
         LICENSE = package.__license__
