@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     # Long description will be the body of content on PyPI page
     try:
-        LONG_DESCRIPTION = open("README.rst", "rb").read().decode("utf-8")
+        LONG_DESCRIPTION = open("README.md", "rb").read().decode("utf-8")
     except:
         LONG_DESCRIPTION = "No long description!"
 
