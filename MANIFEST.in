@@ -1,2 +1,2 @@
-include README.md LICENSE.txt requirements.txt
+include README.md LICENSE requirements.txt
 recursive-include pytrees *.*
