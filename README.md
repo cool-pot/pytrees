@@ -1,4 +1,6 @@
 # pytrees
+![](https://img.shields.io/badge/LICENSE-MIT-green.svg)
+![](https://img.shields.io/badge/python-python3-color.svg)
 
 A collection of python3 implementations of trees.
 
